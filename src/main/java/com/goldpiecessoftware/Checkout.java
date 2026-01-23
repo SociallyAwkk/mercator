@@ -16,9 +16,10 @@ public class Checkout {
 
     public int getTotalPricePence(List<String> itemList){
         int total = 0;
-        for(String item : itemList){
-            total += getPricePence(item);
-        }
+        int appleCountWithDiscount = ApplesPostDiscount(itemList);
+        int orangeCountWithDiscount = OrangesPostDiscount(itemList);
+        total += appleCountWithDiscount * getPricePence("Apple");
+        total += orangeCountWithDiscount * getPricePence("Orange");
         return total;
     }
 
@@ -33,4 +34,18 @@ public class Checkout {
     public String priceFullBasket(List<String> itemList){
         return convertPenceToPoundsString(getTotalPricePence(itemList));
     }
+
+    public int ApplesPostDiscount(List<String> itemList){
+        int appleCount = Math.toIntExact(itemList.stream().filter(item -> item.equals("Apple")).count());
+        int discountedApples = appleCount / 2;
+        return appleCount - discountedApples;
+    }
+
+    public int OrangesPostDiscount(List<String> itemList){
+        int orangeCount = Math.toIntExact(itemList.stream().filter(item -> item.equals("Orange")).count());
+        int discountedOranges = orangeCount / 3;
+        return orangeCount - discountedOranges;
+    }
+
+
 }

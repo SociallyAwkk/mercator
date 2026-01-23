@@ -52,5 +52,36 @@ public class CheckoutTest extends TestCase {
         assertEquals("£0.85", checkout.priceFullBasket(items));
     }
 
+    public void testBOGOFAppleDiscountViable(){
+        Checkout checkout = new Checkout();
+        List<String> items = List.of("Apple", "Apple", "Apple", "Orange");
+        assertEquals(2, checkout.ApplesPostDiscount(items));
+    }
+
+    public void testBOGOFAppleDiscountUnViable(){
+        Checkout checkout = new Checkout();
+        List<String> items = List.of("Apple", "Orange");
+        assertEquals(1, checkout.ApplesPostDiscount(items));
+    }
+
+    public void testThreeForTwoOrangeDiscountViable(){
+        Checkout checkout = new Checkout();
+        List<String> items = List.of("Orange", "Orange", "Orange", "Orange", "Apple");
+        assertEquals(3, checkout.OrangesPostDiscount(items));
+    }
+
+    public void testThreeForTwoOrangeDiscountUnViable(){
+        Checkout checkout = new Checkout();
+        List<String> items = List.of("Orange", "Orange", "Apple");
+        assertEquals(2, checkout.OrangesPostDiscount(items));
+    }
+
+    public void testPriceBasedOnItemListWithDiscount(){
+        Checkout checkout = new Checkout();
+        List<String> items = List.of("Apple", "Apple", "Orange", "Orange", "Orange");
+        assertEquals("£1.10", checkout.priceFullBasket(items));
+    }
+
+
 
 }
