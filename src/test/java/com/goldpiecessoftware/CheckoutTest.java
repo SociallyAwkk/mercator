@@ -20,6 +20,11 @@ public class CheckoutTest extends TestCase {
         assertEquals(25, checkout.getPricePence("Orange"));
     }
 
+    public void testBananaPricing(){
+        Checkout checkout = new Checkout();
+        assertEquals(20, checkout.getPricePence("Banana"));
+    }
+
     public void testTotalPricing(){
         Checkout checkout = new Checkout();
         List<String> items = List.of("Apple", "Orange");
@@ -55,33 +60,49 @@ public class CheckoutTest extends TestCase {
     public void testBOGOFAppleDiscountViable(){
         Checkout checkout = new Checkout();
         List<String> items = List.of("Apple", "Apple", "Apple", "Orange");
-        assertEquals(2, checkout.ApplesPostDiscount(items));
+        assertEquals(2, checkout.FruitPostDiscount(items, "Apple"));
     }
 
     public void testBOGOFAppleDiscountUnViable(){
         Checkout checkout = new Checkout();
         List<String> items = List.of("Apple", "Orange");
-        assertEquals(1, checkout.ApplesPostDiscount(items));
+        assertEquals(1, checkout.FruitPostDiscount(items, "Apple"));
+    }
+
+    public void testBOGOFBananaDiscountViable(){
+        Checkout checkout = new Checkout();
+        List<String> items = List.of("Banana", "Banana");
+        assertEquals(1, checkout.FruitPostDiscount(items, "Banana"));
     }
 
     public void testThreeForTwoOrangeDiscountViable(){
         Checkout checkout = new Checkout();
         List<String> items = List.of("Orange", "Orange", "Orange", "Orange", "Apple");
-        assertEquals(3, checkout.OrangesPostDiscount(items));
+        assertEquals(3, checkout.FruitPostDiscount(items, "Orange"));
     }
 
     public void testThreeForTwoOrangeDiscountUnViable(){
         Checkout checkout = new Checkout();
         List<String> items = List.of("Orange", "Orange", "Apple");
-        assertEquals(2, checkout.OrangesPostDiscount(items));
+        assertEquals(2, checkout.FruitPostDiscount(items, "Orange"));
     }
 
     public void testPriceBasedOnItemListWithDiscount(){
         Checkout checkout = new Checkout();
-        List<String> items = List.of("Apple", "Apple", "Orange", "Orange", "Orange");
-        assertEquals("£1.10", checkout.priceFullBasket(items));
+        List<String> items = List.of("Apple", "Apple", "Orange", "Orange", "Orange", "Banana");
+        assertEquals("£1.30", checkout.priceFullBasket(items));
     }
 
+    public void testAppleBananDiscount(){
+        Checkout checkout = new Checkout();
+        List<String> items = List.of("Apple", "Banana");
+        assertEquals(60, checkout.getTotalPricePence(items));
+    }
 
+    public void testAppleBananDiscountContinued(){
+        Checkout checkout = new Checkout();
+        List<String> items = List.of("Apple", "Banana", "Banana", "Banana");
+        assertEquals(80, checkout.getTotalPricePence(items));
+    }
 
 }
